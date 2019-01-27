@@ -1,0 +1,17 @@
+{
+  "name": "nodeconnect4",
+  "version": "1.0.0",
+  "description": "Connect 4 game built with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "debug": "node --inspect index.js"
+  },
+  "author": "irhadkul",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
+}
