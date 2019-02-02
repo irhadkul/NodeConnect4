@@ -3,6 +3,14 @@ module.exports = (socket) => {
         console.log(data);
     });
 
+    socket.on('join room', (data) => {
+        console.log(data);
+    });
+    socket.on('leave room', (data) => {
+        console.log(data);
+    });
+
+
     socket.on('getData', (data) => {
         console.log(data);
         socket.emit('newData', {data: 'New Data'});

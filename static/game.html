@@ -7,7 +7,7 @@
     <title>Connect 4 Node Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
-    <!-- <script src="main.js"></script> -->
+  
 </head>
 
 <body>
@@ -15,32 +15,9 @@
     <button class="send-data">Send Events</button>
     <div class="data_holder--js"></div>
 
-    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
-    <script>
-        const socket = io.connect();
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const dataHolderElem = document.querySelector('.data_holder--js');
-           
-            socket.emit('start', {
-                data: 'start'
-            });
-
-            socket.on('newData', (data) => {
-                const paragraph = document.createElement('p');
-                console.log(data);
-                paragraph.innerText = `${Date()}`;
-                dataHolderElem.appendChild(paragraph);
-            });
-
-            document.querySelector('.send-data').addEventListener('click', (event) => {
-                socket.emit('getData', {
-                    data: 'some new data'
-                });
-
-            });
-
-        });
-    </script>
+ <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+ <script src="/static/js/ioClientFunctions.js"></script>
+ <script src="/static/js/services/ioEmitService.js"></script>
 </body>
 
 </html>
