@@ -16,10 +16,11 @@ module.exports = class Game{
         return boardTemplate;
     }
     calculateImpact(column){
-        this.board.forEach((row)=>{
-            if(parseInt(row[column]) === 0){
-                this.board[row][column] = 1;
-                return;
+        let columnNum = parseInt(column);
+        this.board.some((row,index)=>{
+            if(parseInt(row[columnNum]) === 0){
+                this.board[index][columnNum] = 1;
+                return true;
             }
         });
     }
