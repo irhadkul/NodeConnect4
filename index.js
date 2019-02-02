@@ -5,6 +5,7 @@ const port = Number(process.env.PORT || 3000);
 const io = require('socket.io').listen(server);
 const routes = require('./routes/routes');
 const ioFunctions = require('./interaction/ioFunctions');
+const Game = require('./logic/game/game');
 // Request Time
 let reqTime = (req,res,next)=>{
     let date = new Date();
@@ -15,12 +16,14 @@ let reqTime = (req,res,next)=>{
 app.use(reqTime);
 app.use("/static", express.static(__dirname + '/static'));
 
+
 server.listen(port);
 // Routing
 routes(app);
 // IO functions
 io.on('connection', (socket)=>{
-    ioFunctions(socket);
+    let roomGame = new Game();
+    ioFunctions(socket, roomGame);
 });
 
 

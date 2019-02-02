@@ -1,4 +1,4 @@
-module.exports = (socket) => {
+module.exports = (socket, game) => {
     socket.on('start', (data) => {
         console.log(data);
     });
@@ -16,8 +16,9 @@ module.exports = (socket) => {
         socket.emit('newData', {data: 'New Data'});
     });
     socket.on('clickedBoardControll', (data) => {
-        console.log(data);
-        socket.emit('clickedBoardControll', {data: data});
+        console.log(data, game.board);
+        game.calculateImpact(data.column);
+        socket.emit('clickedBoardControll', {data: data, game: game.board});
     })
 
 }
