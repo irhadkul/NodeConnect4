@@ -149,13 +149,10 @@ module.exports = class Game {
         if( horizontalCellLeft.player === playerNum){
             console.log('check right', horizontalCellLeft, currentCell);
             if(!horizontalCellLeft.horizontalLeft){
-                horizontalCellLeft.horizontalLeft = 0;
-                currentCell.horizontalLeft = 0;
+                horizontalCellLeft.horizontalLeft = 1;
+              
             }  
-
-            horizontalCellLeft.horizontalLeft += 1;
             currentCell.horizontalLeft = horizontalCellLeft.horizontalLeft + 1;
-
             if(currentCell.horizontalLeft === 4){
                 this._win(playerNum);
                 return true;
@@ -166,11 +163,8 @@ module.exports = class Game {
         if( horizontalCellRight.player === playerNum){
             console.log('check right', horizontalCellRight, currentCell);
             if(!horizontalCellRight.horizontalRight){
-                horizontalCellRight.horizontalRight = 0;
-                currentCell.horizontalRight = 0;
+                horizontalCellRight.horizontalRight = 1;
             }  
-       
-            horizontalCellRight.horizontalRight += 1;
             currentCell.horizontalRight = horizontalCellRight.horizontalRight + 1;
 
             if(currentCell.horizontalRight === 4){
@@ -197,15 +191,13 @@ module.exports = class Game {
     _checkDiagonalRight(diagonalCellRight,playerNum, currentCell){
         if( diagonalCellRight.player === playerNum){
             if(!diagonalCellRight.diagonalRight){
-                diagonalCellRight.diagonalRight = 0;
-                currentCell.diagonalRight = 1;
+                diagonalCellRight.diagonalRight = 1;
+              
             }  
+            currentCell.diagonalRight = diagonalCellRight.diagonalRight + 1;
 
-            diagonalCellRight.diagonalRight += 1;
-            currentCell.diagonalRight = diagonalCellRight.diagonalRight;
-
-            if(diagonalCellRight.diagonalRight === 3){
-                currentCell.diagonalRight = 4;
+            if(currentCell.diagonalRight === 4){
+          
                 this._win(playerNum);
             }
         }
@@ -214,15 +206,12 @@ module.exports = class Game {
     _checkDiagonalLeft(diagonalCellLeft, playerNum, currentCell ){
         if( diagonalCellLeft.player === playerNum){
             if(!diagonalCellLeft.diagonalLeft){
-                diagonalCellLeft.diagonalLeft = 0;
-                currentCell.diagonalLeft = 1;
+                diagonalCellLeft.diagonalLeft = 1;
             }  
+            currentCell.diagonalLeft = diagonalCellLeft.diagonalLeft + 1;
 
-            diagonalCellLeft.diagonalLeft += 1;
-            currentCell.diagonalLeft = diagonalCellLeft.diagonalLeft;
-
-            if(diagonalCellLeft.diagonalLeft === 3){
-                currentCell.diagonalLeft = 4;
+            if(currentCell.diagonalLeft === 4){
+      
                 this._win(playerNum);
             }
         }
