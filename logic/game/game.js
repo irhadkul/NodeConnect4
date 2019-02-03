@@ -126,54 +126,32 @@ module.exports = class Game {
     }
 
     _checkHorizontalCells(rowIndex ,columnIndex, playerNum, possibleMovement){
-        let currentCell = this.board[rowIndex][columnIndex];
-        
-        if(possibleMovement.horizontal.left){
-            let horizontalCellLeft = this.board[rowIndex][columnIndex - 1];
-            this._checkHorizontalLeft(horizontalCellLeft,playerNum,currentCell);
-        }
+      
+        let currentRow = this.board[rowIndex];
+        let currentCell = currentRow[columnIndex];
+        let horizontalHitAcc = 0;
 
-        if(possibleMovement.horizontal.right){
-            let horizontalCellRight = this.board[rowIndex][columnIndex + 1];
-            this._checkHorizontalRight(horizontalCellRight,playerNum,currentCell);
-        }
+        currentRow.some((rowCell,index)=>{
+            if(horizontalHitAcc >= 4){
+                return true;
+            }
+            if(rowCell.player == playerNum){
+                horizontalHitAcc+=1;
+            }
+            else{
+                horizontalHitAcc = 0;
+            }
+        });
 
-        if(currentCell.horizontalCellLeft + currentCell.horizontalCellRight == 4){
+        console.log("#####curCell",currentCell);
+        if(horizontalHitAcc >= 4){
             this._win(playerNum);
             return true;
         }
 
     }
 
-    _checkHorizontalLeft(horizontalCellLeft, playerNum, currentCell){
-        if( horizontalCellLeft.player === playerNum){
-            console.log('check right', horizontalCellLeft, currentCell);
-            if(!horizontalCellLeft.horizontalLeft){
-                horizontalCellLeft.horizontalLeft = 1;
-              
-            }  
-            currentCell.horizontalLeft = horizontalCellLeft.horizontalLeft + 1;
-            if(currentCell.horizontalLeft === 4){
-                this._win(playerNum);
-                return true;
-            }
-        }
-    }
-    _checkHorizontalRight(horizontalCellRight, playerNum, currentCell){
-        if( horizontalCellRight.player === playerNum){
-            console.log('check right', horizontalCellRight, currentCell);
-            if(!horizontalCellRight.horizontalRight){
-                horizontalCellRight.horizontalRight = 1;
-            }  
-            currentCell.horizontalRight = horizontalCellRight.horizontalRight + 1;
 
-            if(currentCell.horizontalRight === 4){
-        
-                this._win(playerNum);
-                return true;
-            }
-        }
-    }
 
     _checkDiagonalCells(rowIndex ,columnIndex, playerNum, possibleMovement){
         let currentCell = this.board[rowIndex][columnIndex];
