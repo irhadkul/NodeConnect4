@@ -145,7 +145,7 @@ module.exports = class Game {
 
         if(possibleMovement.diagonal.rightUp){
             let diagonalCellRight = this.board[rowIndex-1][columnIndex + 1];
-            this._checkHorizontalRight(diagonalCellRight,playerNum,currentCell);
+            this._checkDiagonalRight(diagonalCellRight,playerNum,currentCell);
         }
         if(possibleMovement.diagonal.leftUp){
             let diagonalCellLeft = this.board[rowIndex-1][columnIndex - 1];
@@ -192,6 +192,7 @@ module.exports = class Game {
         this.board = this.createBoard();
         this.disabledInteraction = false;
     }
+ 
 
     gameStatus(){
         let progress = this.disabledInteraction ? 'ended' : 'inProgress';

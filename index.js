@@ -1,3 +1,4 @@
+// jshint esversion:6
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -22,8 +23,28 @@ server.listen(port);
 routes(app);
 // IO functions
 io.on('connection', (socket)=>{
-    let roomGame = new Game();
-    ioFunctions(socket, roomGame);
+    // socket.in('test').adapter.rooms['test'].length
+    let roomName = 'test';
+    let roomGame = null;
+    let player = 1;
+    socket.join(roomName);
+   
+    if(socket.adapter.rooms[roomName].length > 1){
+        if(socket.adapter.rooms[roomName].length > 2){
+            return;
+        }
+        player = 2;
+        roomGame = socket.adapter.rooms[roomName].game ;
+        console.log("################",socket.adapter.rooms[roomName])
+        ioFunctions(socket,roomGame , roomName, player);
+    } else{
+        roomGame = new Game();
+        socket.adapter.rooms[roomName].game = roomGame;
+        ioFunctions(socket,roomGame , roomName, player);
+    }
+   
+    
+    
 });
 
 
