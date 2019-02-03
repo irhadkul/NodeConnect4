@@ -22,6 +22,9 @@ module.exports = class Game {
         if(this.disabledInteraction){
             return;
         }
+        if(columnIndex > this.board[0].length - 1 ){
+            return;
+        }
         this.board.some((row, rowIndex) => {
             let columnPlace = this.board[rowIndex][columnIndex];
             let impact = parseInt(columnPlace.player);
@@ -36,6 +39,7 @@ module.exports = class Game {
                 return true;
             }
         });
+        return true;
     }
 
     checkNeighbours(row , rowIndex ,columnIndex, playerNum){
@@ -47,17 +51,17 @@ module.exports = class Game {
             if(possibleMovement.vertical.up){
                 // check vertical
                 this._checkVerticalCell( rowIndex ,columnIndex, playerNum);
-            };
+            }
 
             if(possibleMovement.diagonal.leftUp || possibleMovement.diagonal.rightUp){
                 // check vertical
                 this._checkDiagonalCells( rowIndex ,columnIndex, playerNum, possibleMovement);
-            };
+            }
 
-            if(possibleMovement.horizontal.left || possibleMovement.horizontal.right){
-                   // check horizontal
-                this._checkHorizontalCells( rowIndex ,columnIndex, playerNum, possibleMovement);
-            };
+
+             // check horizontal
+            this._checkHorizontalCells( rowIndex ,columnIndex, playerNum);
+          
             
 
         }catch(e){
@@ -72,10 +76,6 @@ module.exports = class Game {
             vertical: {
                 up: false
             },
-            horizontal: {
-                left: false,
-                right: false
-            },
             diagonal: {
                 leftUp: false,
                 rightUp: false
@@ -84,22 +84,12 @@ module.exports = class Game {
 
         if (rowIndex !== 0) {
             movement.vertical.up = true;
-        }
-
-        if (columnIndex < row.length - 1) {
-            movement.horizontal.right = true;
-            if (movement.vertical.up) {
+            if (columnIndex < row.length - 1) {
                 movement.diagonal.rightUp = true;
             }
-
-        }
-        if (columnIndex > 0) {
-            console.log(columnIndex);
-            movement.horizontal.left = true;
-            if (movement.vertical.up) {
+            if (columnIndex > 0) {
                 movement.diagonal.leftUp = true;
             }
-
         }
 
         return movement;
@@ -125,10 +115,8 @@ module.exports = class Game {
         }
     }
 
-    _checkHorizontalCells(rowIndex ,columnIndex, playerNum, possibleMovement){
-      
+    _checkHorizontalCells(rowIndex ,columnIndex, playerNum){
         let currentRow = this.board[rowIndex];
-        let currentCell = currentRow[columnIndex];
         let horizontalHitAcc = 0;
 
         currentRow.some((rowCell,index)=>{
@@ -143,7 +131,6 @@ module.exports = class Game {
             }
         });
 
-        console.log("#####curCell",currentCell);
         if(horizontalHitAcc >= 4){
             this._win(playerNum);
             return true;
@@ -169,13 +156,12 @@ module.exports = class Game {
     _checkDiagonalRight(diagonalCellRight,playerNum, currentCell){
         if( diagonalCellRight.player === playerNum){
             if(!diagonalCellRight.diagonalRight){
-                diagonalCellRight.diagonalRight = 1;
-              
+                diagonalCellRight.diagonalRight = 1;   
             }  
+
             currentCell.diagonalRight = diagonalCellRight.diagonalRight + 1;
 
             if(currentCell.diagonalRight === 4){
-          
                 this._win(playerNum);
             }
         }
@@ -204,7 +190,16 @@ module.exports = class Game {
     }
     _resetBoard(){
         this.board = this.createBoard();
+        this.disabledInteraction = false;
     }
 
+    gameStatus(){
+        let progress = this.disabledInteraction ? 'ended' : 'inProgress';
+        let status = {
+            status: progress
+        };
+
+        return status;
+    }
 
 };

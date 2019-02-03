@@ -1,3 +1,4 @@
+// jshint esversion:6
 module.exports = (socket, game) => {
     socket.on('start', (data) => {
         console.log(data);
@@ -16,9 +17,15 @@ module.exports = (socket, game) => {
         socket.emit('newData', {data: 'New Data'});
     });
     socket.on('clickedBoardControll', (data) => {
-        // console.log(data, game.board);
-        game.calculateImpact(data.column);
-        socket.emit('updatedBoardControll', {data: data, game: game.board});
-    })
+        let gameStatus = game.gameStatus().status;
+        if(gameStatus !== 'ended'){
+            game.calculateImpact(data.column);
+            // get the new status
+            gameStatus = game.gameStatus().status;
+            socket.emit('updatedBoardControll', {column: data.column, game: game.board, status: gameStatus});
+        } else{
+            socket.emit('updatedBoardControll', {status: gameStatus});
+        }
+    });
 
-}
+};
