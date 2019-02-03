@@ -33,7 +33,6 @@ module.exports = class Game {
                 } catch (e) {
                     console.warn(e);
                 }
-
                 return true;
             }
         });
@@ -44,9 +43,6 @@ module.exports = class Game {
         try{
             // Calculate possible movement
             let possibleMovement = this._possibleMovement(row , rowIndex ,columnIndex);
-
-
-         
 
             if(possibleMovement.vertical.up){
                 // check vertical
@@ -63,7 +59,6 @@ module.exports = class Game {
                 this._checkHorizontalCells( rowIndex ,columnIndex, playerNum, possibleMovement);
             };
             
-
 
         }catch(e){
             console.log("Out of bounds",e);
@@ -98,7 +93,8 @@ module.exports = class Game {
             }
 
         }
-        if (columnIndex < 0) {
+        if (columnIndex > 0) {
+            console.log(columnIndex);
             movement.horizontal.left = true;
             if (movement.vertical.up) {
                 movement.diagonal.leftUp = true;
@@ -131,62 +127,69 @@ module.exports = class Game {
 
     _checkHorizontalCells(rowIndex ,columnIndex, playerNum, possibleMovement){
         let currentCell = this.board[rowIndex][columnIndex];
-        let horizontalCellLeft = this.board[rowIndex][columnIndex - 1];
-        let horizontalCellRight = this.board[rowIndex][columnIndex + 1];
-
-      
+        
         if(possibleMovement.horizontal.left){
+            let horizontalCellLeft = this.board[rowIndex][columnIndex - 1];
             this._checkHorizontalLeft(horizontalCellLeft,playerNum,currentCell);
         }
 
         if(possibleMovement.horizontal.right){
+            let horizontalCellRight = this.board[rowIndex][columnIndex + 1];
             this._checkHorizontalRight(horizontalCellRight,playerNum,currentCell);
+        }
+
+        if(currentCell.horizontalCellLeft + currentCell.horizontalCellRight == 4){
+            this._win(playerNum);
+            return true;
         }
 
     }
 
     _checkHorizontalLeft(horizontalCellLeft, playerNum, currentCell){
         if( horizontalCellLeft.player === playerNum){
+            console.log('check right', horizontalCellLeft, currentCell);
             if(!horizontalCellLeft.horizontalLeft){
                 horizontalCellLeft.horizontalLeft = 0;
-                currentCell.horizontalLeft = 1;
+                currentCell.horizontalLeft = 0;
             }  
 
             horizontalCellLeft.horizontalLeft += 1;
-            currentCell.horizontalLeft = horizontalCellLeft.horizontalLeft;
+            currentCell.horizontalLeft = horizontalCellLeft.horizontalLeft + 1;
 
-            if(horizontalCellLeft.horizontalLeft === 3){
-                currentCell.horizontalLeft = 4;
+            if(currentCell.horizontalLeft === 4){
                 this._win(playerNum);
+                return true;
             }
         }
     }
     _checkHorizontalRight(horizontalCellRight, playerNum, currentCell){
         if( horizontalCellRight.player === playerNum){
+            console.log('check right', horizontalCellRight, currentCell);
             if(!horizontalCellRight.horizontalRight){
                 horizontalCellRight.horizontalRight = 0;
-                currentCell.horizontalRight = 1;
+                currentCell.horizontalRight = 0;
             }  
-
+       
             horizontalCellRight.horizontalRight += 1;
-            currentCell.horizontalRight = horizontalCellRight.horizontalRight;
+            currentCell.horizontalRight = horizontalCellRight.horizontalRight + 1;
 
-            if(horizontalCellRight.horizontalRight === 3){
-                currentCell.horizontalRight = 4;
+            if(currentCell.horizontalRight === 4){
+        
                 this._win(playerNum);
+                return true;
             }
         }
     }
 
     _checkDiagonalCells(rowIndex ,columnIndex, playerNum, possibleMovement){
         let currentCell = this.board[rowIndex][columnIndex];
-        let diagonalCellRight = this.board[rowIndex-1][columnIndex + 1];
-        let diagonalCellLeft = this.board[rowIndex-1][columnIndex - 1];
-  
+
         if(possibleMovement.diagonal.rightUp){
+            let diagonalCellRight = this.board[rowIndex-1][columnIndex + 1];
             this._checkHorizontalRight(diagonalCellRight,playerNum,currentCell);
         }
         if(possibleMovement.diagonal.leftUp){
+            let diagonalCellLeft = this.board[rowIndex-1][columnIndex - 1];
             this._checkDiagonalLeft(diagonalCellLeft,playerNum,currentCell);
         }
 
