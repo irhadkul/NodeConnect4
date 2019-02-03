@@ -11,8 +11,8 @@ document.querySelector('.send-data').addEventListener('click', (event) => {
 board_cellControll.forEach((elem,key)=>{
     
     elem.addEventListener("click", (event)=>{
-        socket.emit('clickedBoardControll', {
-            data: {column: key}
-        });
+        socket.emit('clickedBoardControll', 
+            {column: key}
+        );
     } );
 });

@@ -16,9 +16,9 @@ module.exports = (socket, game) => {
         socket.emit('newData', {data: 'New Data'});
     });
     socket.on('clickedBoardControll', (data) => {
-        console.log(data, game.board);
-        game.calculateImpact(data.data.column);
-        socket.emit('clickedBoardControll', {data: data, game: game.board});
+        // console.log(data, game.board);
+        game.calculateImpact(data.column);
+        socket.emit('updatedBoardControll', {data: data, game: game.board});
     })
 
 }
